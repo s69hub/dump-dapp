@@ -1,8 +1,10 @@
 import React, { Fragment } from "react";
-import { Container, Row, Col, Card } from "react-bootstrap";
+import { Container, Row, Col, Card, Button } from "react-bootstrap";
 import logo from "../../images/logo.svg";
 import xusd from "../../images/xusd.svg";
 import Countdown from "react-countdown";
+import telegram from "../../images/telegram.svg";
+import twitter from "../../images/twitter.svg";
 
 function Soon() {
   const countdownRenderer = ({ days, hours, minutes, seconds, completed }) => {
@@ -79,6 +81,34 @@ function Soon() {
       <Row className="d-flex justify-content-center">
         <Col xs={8} className="mt-4">
           <Countdown date={1657057545000} renderer={countdownRenderer} />
+        </Col>
+      </Row>
+      <Row className="mt-4 d-flex justify-content-center">
+        <Col sm={12} md={4} className="text-center">
+          <a href="https://t.me/+tCppOVSzIL01ZjRk" target="_blank">
+            <Button variant="outline-primary">
+              <img
+                src={telegram}
+                alt="Telegram"
+                height="25px"
+                className="shadow-filter me-2"
+              />
+              Join Telegram!
+            </Button>
+          </a>
+        </Col>
+        <Col sm={12} md={4} className="text-center">
+          <a href="https://twitter.com/DumpToken" target="_blank">
+            <Button variant="outline-primary mt-4 mt-md-0 mb-4 mb-md-0">
+              <img
+                src={twitter}
+                alt="Twitter"
+                height="25px"
+                className="shadow-filter me-2"
+              />
+              Follow on Twitter!
+            </Button>
+          </a>
         </Col>
       </Row>
     </Container>
