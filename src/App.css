@@ -5,19 +5,31 @@
 body {
     margin: 0;
     padding: 0;
-    background: #001f27;
+    background-color: #001f27;
+    background-image: url(./images/bg1920.png);
+    background-position: top center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
 }
+
+@media screen and (max-width: 992px) {
+    body {
+        background-image: url(./images/bg1000.png);
+    }
+}
+    
+
 
 .container-main {
     margin-top: 100px;
 }
 
 .logo {
-    filter: drop-shadow(0px 0px 50px rgb(167, 167, 167));
+    filter: drop-shadow(0px 0px 50px #000);
 }
 
 .navbar-dark {
-    background-color: #002630;
+    background-color: #002630c0;
 }
 
 .card-countdown {
@@ -32,4 +44,8 @@ body {
 
 .soon {
     text-shadow: 0 0 10px #000;
+}
+
+.link-light {
+    text-decoration: unset !important;
 }
