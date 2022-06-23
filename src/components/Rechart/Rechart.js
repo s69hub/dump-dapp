@@ -48,33 +48,33 @@ function Rechart() {
           margin={{ top: 5, right: 20, bottom: 5, left: 0 }}
         >
           <defs>
-            <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8} />
-              <stop offset="95%" stopColor="#8884d8" stopOpacity={0} />
+            <linearGradient id="colorUv" x1="1" y1="0" x2="0" y2="1">
+              <stop offset="5%" stopColor="#00FFFE" stopOpacity={0.7} />
+              <stop offset="50%" stopColor="#FF4200" stopOpacity={0.7} />
+              <stop offset="95%" stopColor="#1800FF" stopOpacity={0.4} />
             </linearGradient>
           </defs>
           <Area
             type="monotone"
             dataKey="price"
-            stroke="#8884d8"
+            stroke="#373737"
             fillOpacity={1}
             fill="url(#colorUv)"
           />
 
           <XAxis
             dataKey="date"
-            
             tickFormatter={xAxixTickFormatter}
+            minTickGap={96}
           />
           <YAxis dataKey="price" domain={[1.187, "auto"]} tickCount={25} />
-          <Tooltip/>
+          <Tooltip />
           <Brush
             dataKey="date"
             height={30}
-            stroke="#8884d8"
+            stroke="#00789D"
             tickFormatter={brushTickFormatter}
           />
-          <CartesianGrid strokeDasharray="3 3" />
         </AreaChart>
       </ResponsiveContainer>
     </Container>
