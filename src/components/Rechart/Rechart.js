@@ -42,7 +42,7 @@ function Rechart() {
 
   return (
     <Container className="mt-5">
-      <ResponsiveContainer width="100%" height={400}>
+      <ResponsiveContainer height={400}>
         <AreaChart
           data={chartData}
           margin={{ top: 5, right: 20, bottom: 5, left: 0 }}

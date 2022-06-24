@@ -57,7 +57,7 @@ function BagValue() {
 
   return (
     <Container className="d-flex justify-content-evenly">
-      <Card className="text-center">
+      <Card className="text-center card-transparent">
         <Card.Body>
           <Card.Title>Your Bag</Card.Title>
           <Card.Text>

@@ -6,14 +6,15 @@ import dump from "../../images/dump.svg";
 export default function Menu() {
 
   return (
-    <Navbar collapseOnSelect expand="md" className="fixed-top" variant="dark" >
+    <Navbar collapseOnSelect expand="md" className="fixed-top" variant="dark">
       <Container>
-        <Navbar.Brand
-          href="#"
-          target="_blank"
-          className="ps-md-3"
-        >
-          <img src={dump} alt="DumpToken.net" height="20px" />
+        <Navbar.Brand href="#" target="_blank" className="ps-md-3">
+          <img
+            src={dump}
+            alt="DumpToken.net"
+            height="20px"
+            className="filter-shadow"
+          />
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">

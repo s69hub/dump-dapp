@@ -72,3 +72,12 @@ body {
 .shadow-filter {
     filter: drop-shadow(0px 0px 3px #000);
 }
+
+.card-transparent {
+    color: white;
+    background-color: #002630c0;
+    border: none;
+    border-radius: 1rem;
+    text-shadow: 0 0 5px #000;
+    border: 3px solid #002730;
+}
