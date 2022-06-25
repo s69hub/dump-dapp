@@ -57,24 +57,10 @@ function BagValue() {
 
   return (
     <Container className="d-flex justify-content-evenly">
-      <Card className="text-center card-transparent">
-        <Card.Body>
-          <Card.Title>Your Bag</Card.Title>
-          <Card.Text>
-            <p>{dumpBalance} $DMP</p>
-            <p>${dumpBalance * price}</p>
-          </Card.Text>
-        </Card.Body>
-      </Card>
+      <p>{dumpBalance} $DMP</p>
+      <p>${dumpBalance * price}</p>
 
-      <Card className="text-center">
-        <Card.Body>
-          <Card.Title>DUMP Price</Card.Title>
-          <Card.Text>
-            <p>$DMP = ${price} </p>
-          </Card.Text>
-        </Card.Body>
-      </Card>
+      <p>$DMP = ${price} </p>
     </Container>
   );
 }

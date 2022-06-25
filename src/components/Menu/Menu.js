@@ -1,10 +1,9 @@
 import React from "react";
 import { Navbar, Container, Nav } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { ConnectButton } from "web3uikit";
+import ConnectButton from "../ConnectButton/ConnectButton";
 import dump from "../../images/dump.svg";
 export default function Menu() {
-
   return (
     <Navbar collapseOnSelect expand="md" className="fixed-top" variant="dark">
       <Container>
@@ -13,7 +12,7 @@ export default function Menu() {
             src={dump}
             alt="DumpToken.net"
             height="20px"
-            className="filter-shadow"
+            className="shadow-filter"
           />
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="navbarScroll" />
@@ -24,12 +23,9 @@ export default function Menu() {
             </Link>
 
           </Nav> */}
-          {/* <div className="me-md-0 ms-md-auto d-flex justify-content-center mt-md-0 mt-2 mb-md-0 mb-1">
-            <ConnectButton
-              moralisAuth
-              signingMessage="You are signing to DUMP dApp"
-            />
-          </div> */}
+          <div className="me-md-0 ms-md-auto d-flex justify-content-center mt-md-0 mt-2 mb-md-0 mb-1">
+            <ConnectButton />
+          </div>
         </Navbar.Collapse>
       </Container>
     </Navbar>
