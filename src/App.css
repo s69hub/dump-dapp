@@ -103,3 +103,11 @@ body {
 .card-title {
     text-align: center;
 }
+
+.info-logo {
+    max-height: 200px;
+}
+
+.info-dump {
+    max-height: 150px;
+}
