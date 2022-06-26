@@ -18,10 +18,14 @@ body {
     }
 }
     
-
+.container {
+    padding-right: 0.25rem;
+    padding-left: 0.25rem;
+}
 
 .container-main {
     margin-top: 100px;
+    margin-bottom: 50px;
 }
 
 .logo {
@@ -111,3 +115,28 @@ body {
 .info-dump {
     max-height: 150px;
 }
+
+.card-info {
+    border-radius: 0.25rem;
+    border: 1px solid #001f27;
+    text-align: center;
+    width: 100%;
+    background-color: #004949;
+}
+
+.card-info .card-title {
+    border-bottom: 1px solid #00161b;
+    color:rgb(0, 0, 0);
+    text-shadow: none;
+    font-size: 1rem;
+    padding: 0.25rem;
+    border-radius: 0.25rem;
+    background-color: #00bdbd;
+} 
+
+.card-body {
+    padding: 0.25rem;
+    }
+
+
+

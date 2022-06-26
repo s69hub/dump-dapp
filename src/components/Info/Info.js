@@ -18,7 +18,12 @@ function Info() {
         <Col md={6}>
           <Card className="card-transparent me-3 h-100 p-1">
             <Card.Title>Information</Card.Title>
-            <BagValue />
+            <Card.Body>
+              <BagValue />
+            </Card.Body>
+            <Card.Footer className="text-muted">
+              <small>Last updated 3 mins ago</small>
+            </Card.Footer>
           </Card>
         </Col>
         <Col md={6}>
@@ -27,6 +32,9 @@ function Info() {
             <Card.Body className="text-dark">
               <Rechart />
             </Card.Body>
+            <Card.Footer className="text-muted">
+              <small>Last updated 3 mins ago</small>
+            </Card.Footer>
           </Card>
         </Col>
       </Row>
