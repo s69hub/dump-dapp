@@ -25,8 +25,8 @@ function App() {
         <Menu />
         <Container className="container-main">
           <Routes>
-            <Route path="/" element={<Soon />} />
-            <Route path="/info" element={<Info />} />
+            <Route path="/" element={<Info />} />
+
             <Route path="/swap" element={<Swap />} />
           </Routes>
         </Container>

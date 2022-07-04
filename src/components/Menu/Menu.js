@@ -21,9 +21,7 @@ export default function Menu() {
             <Link to="/" className="nav-link">
               Home
             </Link>
-            <Link to="/info" className="nav-link">
-              Info
-            </Link>
+
             <Link to="/swap" className="nav-link">
               Swap
             </Link>
