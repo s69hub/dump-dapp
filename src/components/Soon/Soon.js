@@ -80,7 +80,7 @@ function Soon() {
           </Col> */}
       <Row className="d-flex justify-content-center">
         <Col xs={8} className="mt-4">
-          <Countdown date={1657057545000} renderer={countdownRenderer} />
+          <Countdown date={1657062000000} renderer={countdownRenderer} />
         </Col>
       </Row>
       <Row className="mt-4 d-flex justify-content-center">
