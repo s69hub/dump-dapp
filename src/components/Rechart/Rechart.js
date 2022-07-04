@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import {
   XAxis,
@@ -9,6 +9,7 @@ import {
   Area,
   ResponsiveContainer,
 } from "recharts";
+import StateContext from "../../contexts/StateContext";
 
 const API = axios.create({
   baseURL: process.env.REACT_APP_DUMP_PRICE_API,
@@ -16,10 +17,12 @@ const API = axios.create({
 
 function Rechart() {
   const [chartData, setChartData] = useState([]);
+  const { refresh, setRefresh } = useContext(StateContext);
 
   const fetchChartData = () => {
     API.get("/price").then((res) => {
       setChartData(res.data);
+      setRefresh(refresh + 1);
     });
   };
 
@@ -32,9 +35,13 @@ function Rechart() {
   };
 
   useEffect(() => {
-    setInterval(() => {
+    const interval = setInterval(() => {
       fetchChartData();
     }, 900000);
+    return () => clearInterval(interval);
+  }, [refresh]);
+
+  useEffect(() => {
     fetchChartData();
   }, []);
 
@@ -42,7 +49,7 @@ function Rechart() {
     <ResponsiveContainer height={350}>
       <AreaChart
         data={chartData}
-        margin={{ top: 0, right: 0, bottom: 5, left: 10 }}
+        margin={{ top: 0, right: 0, bottom: 5, left: 30 }}
       >
         <defs>
           <linearGradient id="colorUv" x1="1" y1="0" x2="0" y2="1">
@@ -66,9 +73,10 @@ function Rechart() {
         />
         <YAxis
           dataKey="price"
-          domain={["dataMin", "auto"]}
-          tickCount={25}
+          domain={["dataMin", "dataMax"]}
+          tickCount={10}
           tickFormatter={(value) => `$${value}`}
+          scale="linear"
         />
         <Tooltip />
         <Brush

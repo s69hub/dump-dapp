@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Container, Col, Row, Modal } from "react-bootstrap";
 import { useChain, useMoralis } from "react-moralis";
 import { getEllipsisTxt } from "../../helpers/formatters";
-import { WalletModal } from "web3uikit";
+import { WalletModal, Blockie } from "web3uikit";
 
 function Wallet() {
   const [buttonText, setButtonText] = useState("Connect Wallet");
@@ -26,7 +26,10 @@ function Wallet() {
   return (
     <>
       <Button variant="primary" onClick={handleShow}>
-        {buttonText}
+        <div className="d-flex">
+          {/* {isAuthenticated && <Blockie key={account} size="5" />} */}
+          <span>{buttonText}</span>
+        </div>
       </Button>
 
       {!isAuthenticated && (

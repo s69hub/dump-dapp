@@ -17,12 +17,17 @@ export default function Menu() {
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
-          {/* <Nav className="text-center">
+          <Nav className="text-center">
             <Link to="/" className="nav-link">
               Home
             </Link>
-
-          </Nav> */}
+            <Link to="/info" className="nav-link">
+              Info
+            </Link>
+            <Link to="/swap" className="nav-link">
+              Swap
+            </Link>
+          </Nav>
           <div className="me-md-0 ms-md-auto d-flex justify-content-center mt-md-0 mt-2 mb-md-0 mb-1">
             <ConnectButton />
           </div>

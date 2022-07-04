@@ -1,10 +1,19 @@
-import React from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Container, Row, Col, Card } from "react-bootstrap";
 import Rechart from "../Rechart/Rechart";
 import BagValue from "../BagValue/BagValue";
 import dump from "../../images/dump.svg";
+import ReactTimeAgo from "react-time-ago";
+import { StateContext } from "../../contexts/StateContext";
 
 function Info() {
+  const { refresh } = useContext(StateContext);
+  const [updateDate, setUpdateDate] = useState(new Date());
+
+  useEffect(() => {
+    setUpdateDate(new Date());
+  }, [refresh]);
+
   return (
     <Container className="text-light">
       <Row>
@@ -15,25 +24,32 @@ function Info() {
             alt="DUMP Token!"
           />
         </Col>
-        <Col md={6}>
-          <Card className="card-transparent me-3 h-100 p-1">
+        <Col md={6} className="mb-3 mb-md-0">
+          <Card className="card-main me-0 me-md-3 h-100">
             <Card.Title>Information</Card.Title>
             <Card.Body>
               <BagValue />
             </Card.Body>
             <Card.Footer className="text-muted">
-              <small>Last updated 3 mins ago</small>
+              <small>
+                All data provided by BSC api (last update{" "}
+                <ReactTimeAgo date={updateDate} />
+                ).
+              </small>
             </Card.Footer>
           </Card>
         </Col>
         <Col md={6}>
-          <Card className="card-transparent p-1">
+          <Card className="card-main">
             <Card.Title>Chart</Card.Title>
             <Card.Body className="text-dark">
               <Rechart />
             </Card.Body>
             <Card.Footer className="text-muted">
-              <small>Last updated 3 mins ago</small>
+              <small>
+                Chart data is every 15 min from TGE till{" "}
+                <ReactTimeAgo date={updateDate} />!
+              </small>
             </Card.Footer>
           </Card>
         </Col>

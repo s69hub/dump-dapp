@@ -31,7 +31,6 @@ function BagValue() {
     await API.get("/price").then((res) => {
       setPriceData(res.data);
     });
-    console.log("priceData: " + priceData);
   };
 
   const calculateChanges = () => {
