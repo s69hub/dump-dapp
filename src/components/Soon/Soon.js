@@ -86,7 +86,7 @@ function Soon() {
       <Row className="mt-4 d-flex justify-content-center">
         <Col sm={12} md={4} className="text-center">
           <a href="https://t.me/+tCppOVSzIL01ZjRk" target="_blank">
-            <Button variant="outline-primary">
+            <Button variant="secondary">
               <img
                 src={telegram}
                 alt="Telegram"
@@ -99,7 +99,7 @@ function Soon() {
         </Col>
         <Col sm={12} md={4} className="text-center">
           <a href="https://twitter.com/DumpToken" target="_blank">
-            <Button variant="outline-primary mt-4 mt-md-0 mb-4 mb-md-0">
+            <Button variant="secondary mt-4 mt-md-0 mb-4 mb-md-0">
               <img
                 src={twitter}
                 alt="Twitter"

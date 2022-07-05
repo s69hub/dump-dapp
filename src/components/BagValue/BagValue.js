@@ -1,19 +1,80 @@
 import React, {useState, useEffect} from "react";
-import { Container, Row, Col, Card } from "react-bootstrap";
-
-import { useMoralis, useWeb3ExecuteFunction } from "react-moralis"
-import balanceOfABI from "./BalanceOfABI.json"
-import calculatePriceABI from "./CalculatePriceABI.json"
+import { Container, Row, Col, Card, CardGroup } from "react-bootstrap";
+import { useMoralis, useWeb3ExecuteFunction } from "react-moralis";
+import balanceOfABI from "./BalanceOfABI.json";
+import axios from "axios";
 
 /* global BigInt */
 
+const API = axios.create({
+  baseURL: process.env.REACT_APP_DUMP_PRICE_API,
+});
+
 function BagValue() {
-    const [dumpBalance, setDumpBalance] = useState(0);
-    const [price, setPrice] = useState(0);
+  const [dumpBalance, setDumpBalance] = useState(0);
+  const [dumpPrice, setDumpPrice] = useState(0);
 
-    const { isAuthenticated, account } = useMoralis();
+  const [priceData, setPriceData] = useState([]);
+  const [oneDayChange, setOneDayChange] = useState(0);
+  const [oneWeekChange, setOneWeekChange] = useState(0);
+  const [oneMonthChange, setOneMonthChange] = useState(0);
+  const [allTimeChange, setAllTimeChange] = useState(0);
+  const [averageDailyChange, setAverageDailyChange] = useState(0);
 
-    const contractProcessor = useWeb3ExecuteFunction();
+  const { isAuthenticated, account } = useMoralis();
+
+  const contractProcessor = useWeb3ExecuteFunction();
+
+  const fetchPriceData = async () => {
+    await API.get("/price").then((res) => {
+      setPriceData(res.data);
+      setDumpPrice(res.data[res.data.length - 1].price);
+    });
+  };
+
+  const calculateChanges = () => {
+    console.log(priceData);
+    if (priceData.length > 1) {
+      setOneDayChange(
+        ((priceData[priceData.length - 1].price -
+          priceData[priceData.length - 97].price) /
+          priceData[priceData.length - 97].price) *
+          100
+      );
+
+      setAllTimeChange(
+        ((priceData[priceData.length - 1].price - priceData[0].price) /
+          priceData[0].price) *
+          100
+      );
+
+      setAverageDailyChange(
+        ((((priceData[priceData.length - 1].price - priceData[0].price) /
+          priceData[0].price) *
+          100) /
+          priceData.length) *
+          96
+      );
+    }
+
+    if (priceData.length > 672) {
+      setOneWeekChange(
+        ((priceData[priceData.length - 1].price -
+          priceData[priceData.length - 673].price) /
+          priceData[priceData.length - 673].price) *
+          100
+      );
+    }
+
+    if (priceData.length > 3040) {
+      setOneMonthChange(
+        ((priceData[priceData.length - 1].price -
+          priceData[priceData.length - 3041].price) /
+          priceData[priceData.length - 3041].price) *
+          100
+      );
+    }
+  };
 
   const fetchDumpBalance = async () => {
     if (!isAuthenticated) {
@@ -23,6 +84,9 @@ function BagValue() {
       params: balanceOf,
       onSuccess: (result) => {
         setDumpBalance(BigInt(result._hex).toString() / Math.pow(10, 18));
+      },
+      onError: (error) => {
+        console.log(error);
       },
     });
   };
@@ -34,59 +98,133 @@ function BagValue() {
     params: { account: account },
   };
 
-  const fetchDumpPrice = async () => {
-    await contractProcessor.fetch({
-      params: calculatePrice,
-      onSuccess: (result) => {
-        setPrice(BigInt(result._hex).toString() / Math.pow(10, 18));
-      },
-    });
-  }
-
-  const calculatePrice = {
-    contractAddress: process.env.REACT_APP_DUMP_CONTRACT,
-    functionName: "calculatePrice",
-    abi: calculatePriceABI,
-    params: {},
-  };
-
   useEffect(() => {
     fetchDumpBalance();
-    fetchDumpPrice();
+    fetchPriceData().then(() => {
+      calculateChanges();
+    });
   }, [isAuthenticated, account]);
 
   return (
-    <Container className="d-flex justify-content-evenly">
-      <Card className="text-center card-transparent">
-        <Card.Body>
-          <Card.Title>Your Bag</Card.Title>
-          <Card.Text>
-            <p>{dumpBalance} $DMP</p>
-            <p>${dumpBalance * price}</p>
-          </Card.Text>
-        </Card.Body>
-      </Card>
+    <Container>
+      <Row>
+        <Col xs={12}>
+          <Card className="card-info">
+            <Card.Title className="mb-0">Last Price</Card.Title>
+            <Card.Body>
+              <Card.Text>${dumpPrice}</Card.Text>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
 
-      <Card className="text-center">
-        <Card.Body>
-          <Card.Title>DUMP Price</Card.Title>
-          <Card.Text>
-            <p>$DMP = ${price} </p>
-          </Card.Text>
-        </Card.Body>
-      </Card>
+      <Row>
+        <Col xs={12}>
+          <p className="text-center mb-0 mt-3">Your Bag</p>
+          <CardGroup>
+            <Card className="card-info">
+              <Card.Title className="mb-0">Balance</Card.Title>
+              <Card.Body>
+                <Card.Text>
+                  {dumpBalance.toLocaleString(`en-US`, {
+                    maximumFractionDigits: 9,
+                  })}{" "}
+                  DUMP
+                </Card.Text>
+              </Card.Body>
+            </Card>
+            <Card className="card-info">
+              <Card.Title className="mb-0">Value</Card.Title>
+              <Card.Body>
+                <Card.Text>
+                  $
+                  {(dumpBalance * dumpPrice).toLocaleString("en-US", {
+                    maximumFractionDigits: 9,
+                  })}
+                </Card.Text>
+              </Card.Body>
+            </Card>
+          </CardGroup>
+        </Col>
+      </Row>
+
+      <Row>
+        <Col xs={12}>
+          <p className="text-center mb-0 mt-3">Price Changes</p>
+          <CardGroup>
+            <Card className="card-info">
+              <Card.Title className="mb-0">Last 24 Hours</Card.Title>
+              <Card.Body>
+                <Card.Text>{oneDayChange.toFixed(5)} %</Card.Text>
+              </Card.Body>
+            </Card>
+            <Card className="card-info">
+              <Card.Title className="mb-0">Last 7 Days</Card.Title>
+              <Card.Body>
+                <Card.Text>{oneWeekChange.toFixed(5)} %</Card.Text>
+              </Card.Body>
+            </Card>
+          </CardGroup>
+        </Col>
+        <Col xs={12} className="mt-1">
+          <CardGroup>
+            <Card className="card-info">
+              <Card.Title className="mb-0">Last 30 Days</Card.Title>
+              <Card.Body>
+                <Card.Text>{oneMonthChange.toFixed(5)} %</Card.Text>
+              </Card.Body>
+            </Card>
+            <Card className="card-info">
+              <Card.Title className="mb-0">All Time</Card.Title>
+              <Card.Body>
+                <Card.Text>{allTimeChange.toFixed(5)} %</Card.Text>
+              </Card.Body>
+            </Card>
+            <Card className="card-info">
+              <Card.Title className="mb-0">Avg. Daily</Card.Title>
+              <Card.Body>
+                <Card.Text>{averageDailyChange.toFixed(5)} %</Card.Text>
+              </Card.Body>
+            </Card>
+          </CardGroup>
+        </Col>
+      </Row>
+
+      <Row>
+        <Col xs={12}>
+          <p className="text-center mb-0 mt-3">Token Details</p>
+          <Card className="card-info">
+            <Card.Title className="mb-0">DUMP Contract Address</Card.Title>
+            <Card.Body>
+              <Card.Text>
+                <a
+                  href="https://bscscan.com/token/0x6b8a384DDe6FC779342Fbb2E4a8EcF73eD18D151"
+                  target="_blank"
+                >
+                  0x6b8a384DDe6FC779342Fbb2E4a8EcF73eD18D151
+                </a>
+              </Card.Text>
+            </Card.Body>
+          </Card>
+        </Col>
+        <Col xs={12} className="mt-1">
+          <Card className="card-info">
+            <Card.Title className="mb-0">Underlying Asset (xUSD)</Card.Title>
+            <Card.Body>
+              <Card.Text>
+                <a
+                  href="https://bscscan.com/token/0x324E8E649A6A3dF817F97CdDBED2b746b62553dD"
+                  target="_blank"
+                >
+                  0x324E8E649A6A3dF817F97CdDBED2b746b62553dD
+                </a>
+              </Card.Text>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
     </Container>
   );
 }
 
 export default BagValue;
-      {
-        /* <Row>
-        <Col xs={8}>Your Balance:</Col>
-        <Col xs={4}>{dumpBalance}</Col>
-      </Row>
-      <Row>
-        <Col xs={8}>Your Bag Value:</Col>
-        <Col xs={4}>{bagValue}</Col>
-      </Row> */
-      }
