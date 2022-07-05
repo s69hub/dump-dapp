@@ -1,11 +1,9 @@
 import React, {useState, useEffect} from "react";
 import { Container, Row, Col, Card, CardGroup } from "react-bootstrap";
-
 import { useMoralis, useWeb3ExecuteFunction } from "react-moralis";
 import balanceOfABI from "./BalanceOfABI.json";
-import calculatePriceABI from "./CalculatePriceABI.json";
-
 import axios from "axios";
+
 /* global BigInt */
 
 const API = axios.create({
@@ -14,7 +12,7 @@ const API = axios.create({
 
 function BagValue() {
   const [dumpBalance, setDumpBalance] = useState(0);
-  const [price, setPrice] = useState(0);
+  const [dumpPrice, setDumpPrice] = useState(0);
 
   const [priceData, setPriceData] = useState([]);
   const [oneDayChange, setOneDayChange] = useState(0);
@@ -30,10 +28,12 @@ function BagValue() {
   const fetchPriceData = async () => {
     await API.get("/price").then((res) => {
       setPriceData(res.data);
+      setDumpPrice(res.data[res.data.length - 1].price);
     });
   };
 
   const calculateChanges = () => {
+    console.log(priceData);
     if (priceData.length > 1) {
       setOneDayChange(
         ((priceData[priceData.length - 1].price -
@@ -49,9 +49,11 @@ function BagValue() {
       );
 
       setAverageDailyChange(
-        ((priceData[priceData.length - 1].price - priceData[0].price) /
+        ((((priceData[priceData.length - 1].price - priceData[0].price) /
+          priceData[0].price) *
+          100) /
           priceData.length) *
-          100
+          96
       );
     }
 
@@ -96,25 +98,8 @@ function BagValue() {
     params: { account: account },
   };
 
-  const fetchDumpPrice = async () => {
-    await contractProcessor.fetch({
-      params: calculatePrice,
-      onSuccess: (result) => {
-        setPrice(BigInt(result._hex).toString() / Math.pow(10, 18));
-      },
-    });
-  };
-
-  const calculatePrice = {
-    contractAddress: process.env.REACT_APP_DUMP_CONTRACT,
-    functionName: "calculatePrice",
-    abi: calculatePriceABI,
-    params: {},
-  };
-
   useEffect(() => {
     fetchDumpBalance();
-    fetchDumpPrice();
     fetchPriceData().then(() => {
       calculateChanges();
     });
@@ -125,9 +110,9 @@ function BagValue() {
       <Row>
         <Col xs={12}>
           <Card className="card-info">
-            <Card.Title className="mb-0">Current Price</Card.Title>
+            <Card.Title className="mb-0">Last Price</Card.Title>
             <Card.Body>
-              <Card.Text>${price}</Card.Text>
+              <Card.Text>${dumpPrice}</Card.Text>
             </Card.Body>
           </Card>
         </Col>
@@ -140,13 +125,23 @@ function BagValue() {
             <Card className="card-info">
               <Card.Title className="mb-0">Balance</Card.Title>
               <Card.Body>
-                <Card.Text>{dumpBalance.toFixed(5)} DMP</Card.Text>
+                <Card.Text>
+                  {dumpBalance.toLocaleString(`en-US`, {
+                    maximumFractionDigits: 9,
+                  })}{" "}
+                  DUMP
+                </Card.Text>
               </Card.Body>
             </Card>
             <Card className="card-info">
               <Card.Title className="mb-0">Value</Card.Title>
               <Card.Body>
-                <Card.Text>${(dumpBalance * price).toFixed(2)}</Card.Text>
+                <Card.Text>
+                  $
+                  {(dumpBalance * dumpPrice).toLocaleString("en-US", {
+                    maximumFractionDigits: 9,
+                  })}
+                </Card.Text>
               </Card.Body>
             </Card>
           </CardGroup>
@@ -158,13 +153,13 @@ function BagValue() {
           <p className="text-center mb-0 mt-3">Price Changes</p>
           <CardGroup>
             <Card className="card-info">
-              <Card.Title className="mb-0">24 Hour</Card.Title>
+              <Card.Title className="mb-0">Last 24 Hours</Card.Title>
               <Card.Body>
                 <Card.Text>{oneDayChange.toFixed(5)} %</Card.Text>
               </Card.Body>
             </Card>
             <Card className="card-info">
-              <Card.Title className="mb-0">7 Day</Card.Title>
+              <Card.Title className="mb-0">Last 7 Days</Card.Title>
               <Card.Body>
                 <Card.Text>{oneWeekChange.toFixed(5)} %</Card.Text>
               </Card.Body>
@@ -174,7 +169,7 @@ function BagValue() {
         <Col xs={12} className="mt-1">
           <CardGroup>
             <Card className="card-info">
-              <Card.Title className="mb-0">30 Days</Card.Title>
+              <Card.Title className="mb-0">Last 30 Days</Card.Title>
               <Card.Body>
                 <Card.Text>{oneMonthChange.toFixed(5)} %</Card.Text>
               </Card.Body>
@@ -199,9 +194,16 @@ function BagValue() {
         <Col xs={12}>
           <p className="text-center mb-0 mt-3">Token Details</p>
           <Card className="card-info">
-            <Card.Title className="mb-0">DMP Contract Address</Card.Title>
+            <Card.Title className="mb-0">DUMP Contract Address</Card.Title>
             <Card.Body>
-              <Card.Text>0x15F62C92c5a1b3172B071E3391C82bF815c5e4C8</Card.Text>
+              <Card.Text>
+                <a
+                  href="https://bscscan.com/token/0x6b8a384DDe6FC779342Fbb2E4a8EcF73eD18D151"
+                  target="_blank"
+                >
+                  0x6b8a384DDe6FC779342Fbb2E4a8EcF73eD18D151
+                </a>
+              </Card.Text>
             </Card.Body>
           </Card>
         </Col>
@@ -209,7 +211,14 @@ function BagValue() {
           <Card className="card-info">
             <Card.Title className="mb-0">Underlying Asset (xUSD)</Card.Title>
             <Card.Body>
-              <Card.Text>0x15F62C92c5a1b3172B071E3391C82bF815c5e4C8</Card.Text>
+              <Card.Text>
+                <a
+                  href="https://bscscan.com/token/0x324E8E649A6A3dF817F97CdDBED2b746b62553dD"
+                  target="_blank"
+                >
+                  0x324E8E649A6A3dF817F97CdDBED2b746b62553dD
+                </a>
+              </Card.Text>
             </Card.Body>
           </Card>
         </Col>
