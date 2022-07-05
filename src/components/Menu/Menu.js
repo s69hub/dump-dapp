@@ -12,7 +12,7 @@ export default function Menu() {
   return (
     <Navbar collapseOnSelect expand="md" className="fixed-top" variant="dark">
       <Container>
-        <Navbar.Brand href="#" target="_blank" className="ps-md-3">
+        <Navbar.Brand className="ps-md-3">
           <img
             src={dump}
             alt="DumpToken.net"
