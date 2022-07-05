@@ -30,7 +30,7 @@ function Swap() {
 
   const setMaxBuy = async () => {
     await Web3Api.account.getNativeBalance({ chain: chainId }).then((res) => {
-      setBuyAmount(res.balance - 200000000000000);
+      setBuyAmount(res.balance - 3000000000000000);
     });
   };
 
