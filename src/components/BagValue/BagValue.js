@@ -33,7 +33,6 @@ function BagValue() {
   };
 
   const calculateChanges = () => {
-    console.log(priceData);
     if (priceData.length > 1) {
       setOneDayChange(
         ((priceData[priceData.length - 1].price -
@@ -105,6 +104,12 @@ function BagValue() {
     });
   }, [isAuthenticated, account]);
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      calculateChanges();
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [priceData]);
   return (
     <Container>
       <Row>
@@ -161,7 +166,12 @@ function BagValue() {
             <Card className="card-info">
               <Card.Title className="mb-0">Last 7 Days</Card.Title>
               <Card.Body>
-                <Card.Text>{oneWeekChange.toFixed(5)} %</Card.Text>
+                <Card.Text>
+                  {oneWeekChange > 0
+                    ? oneWeekChange.toFixed(5)
+                    : allTimeChange.toFixed(5)}{" "}
+                  %
+                </Card.Text>
               </Card.Body>
             </Card>
           </CardGroup>
@@ -171,7 +181,12 @@ function BagValue() {
             <Card className="card-info">
               <Card.Title className="mb-0">Last 30 Days</Card.Title>
               <Card.Body>
-                <Card.Text>{oneMonthChange.toFixed(5)} %</Card.Text>
+                <Card.Text>
+                  {oneMonthChange > 0
+                    ? oneMonthChange.toFixed(5)
+                    : allTimeChange.toFixed(5)}{" "}
+                  %
+                </Card.Text>
               </Card.Body>
             </Card>
             <Card className="card-info">

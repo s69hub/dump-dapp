@@ -25,8 +25,8 @@ function Swap() {
   const ContractProcessor = useWeb3ExecuteFunction();
   const { account, chainId } = useMoralis();
 
-  const [buyAmount, setBuyAmount] = useState();
-  const [sellAmount, setSellAmount] = useState();
+  const [buyAmount, setBuyAmount] = useState(0);
+  const [sellAmount, setSellAmount] = useState(0);
 
   const setMaxBuy = async () => {
     await Web3Api.account.getNativeBalance({ chain: chainId }).then((res) => {

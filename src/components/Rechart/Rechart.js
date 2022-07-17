@@ -15,12 +15,13 @@ const API = axios.create({
   baseURL: process.env.REACT_APP_DUMP_PRICE_API,
 });
 
+
 function Rechart() {
   const [chartData, setChartData] = useState([]);
   const { refresh, setRefresh } = useContext(StateContext);
 
   const fetchChartData = () => {
-    API.get("/price").then((res) => {
+    API.get("/price", { mode: "no-cors" }).then((res) => {
       setChartData(res.data);
       setRefresh(refresh + 1);
     });
