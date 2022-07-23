@@ -7,6 +7,7 @@ import telegram from "../../images/telegram.svg";
 import twitter from "../../images/twitter.svg";
 import { FcBullish, FcNews } from "react-icons/fc";
 import { IoSwapVerticalOutline } from "react-icons/io5";
+import { GiMoneyStack } from "react-icons/gi";
 
 export default function Menu() {
   return (
@@ -34,6 +35,11 @@ export default function Menu() {
                 Swap
               </Button>
             </Link>
+            <Link to="/farm" className="nav-link">
+              <Button variant="secondary">
+                <GiMoneyStack size="25" className="shadow-filter" /> Yield Farm
+              </Button>
+            </Link>
             <a
               href="https://docs.google.com/document/d/1jgyNSMX8x8sYRVV67mzrouPuokhib0BIbMQBe0wM4lQ/edit?usp=sharing"
               target="_blank"
@@ -43,6 +49,7 @@ export default function Menu() {
                 <FcNews size="25" className="shadow-filter" /> Litepaper
               </Button>
             </a>
+
             <a
               href="https://t.me/+tCppOVSzIL01ZjRk"
               target="_blank"
@@ -58,7 +65,6 @@ export default function Menu() {
                 Join Telegram!
               </Button>
             </a>
-
             <a
               href="https://twitter.com/DumpToken"
               target="_blank"

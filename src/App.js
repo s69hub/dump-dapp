@@ -10,6 +10,7 @@ import { StateProvider } from "./contexts/StateContext";
 import TimeAgo from "javascript-time-ago";
 import en from "javascript-time-ago/locale/en.json";
 import Swap from "./components/Swap/Swap";
+import Farm from "./components/Farm/Farm";
 
 TimeAgo.addDefaultLocale(en);
 
@@ -26,8 +27,8 @@ function App() {
         <Container className="container-main">
           <Routes>
             <Route path="/" element={<Info />} />
-
             <Route path="/swap" element={<Swap />} />
+            <Route path="/farm" element={<Farm />} />
           </Routes>
         </Container>
       </Router>
