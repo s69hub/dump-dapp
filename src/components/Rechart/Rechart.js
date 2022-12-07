@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useContext } from "react";
-import axios from "axios";
 import {
   XAxis,
   YAxis,
@@ -10,19 +9,30 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import StateContext from "../../contexts/StateContext";
+import Parse from "parse/dist/parse.min.js";
 
-const API = axios.create({
-  baseURL: process.env.REACT_APP_DUMP_PRICE_API,
-});
-
+Parse.initialize(
+  process.env.REACT_APP_PARSE_APP_ID,
+  process.env.REACT_APP_PARSE_JS_KEY
+);
+Parse.serverURL = process.env.REACT_APP_PARSE_SERVER_URL;
 
 function Rechart() {
   const [chartData, setChartData] = useState([]);
   const { refresh, setRefresh } = useContext(StateContext);
 
-  const fetchChartData = () => {
-    API.get("/price", { mode: "no-cors" }).then((res) => {
-      setChartData(res.data);
+  const fetchChartData = async () => {
+    const query = new Parse.Query("PriceData");
+    query.ascending("price");
+    query.limit(100000);
+    query.find().then((results) => {
+      const data = results.map((result) => {
+        return {
+          date: result.get("date"),
+          price: result.get("price"),
+        };
+      });
+      setChartData(data);
       setRefresh(refresh + 1);
     });
   };

@@ -13,9 +13,8 @@ import nextVault from "../../images/nextvault.svg";
 import telegram from "../../images/telegram.svg";
 import logo from "../../images/logo.svg";
 import WalletBalance from "./WalletBalance";
-import Countdown from "react-countdown";
 import { useWeb3ExecuteFunction, useMoralis } from "react-moralis";
-import TimeUntilUnlock from "./TimeUntilUnlock";
+
 import PendingRewards from "./PendingRewards";
 import ClaimRewards from "./ClaimRewards";
 import TotalDeposit from "./TotalDeposit";
@@ -25,6 +24,7 @@ import stakeABI from "./StakeABI";
 import { addDecimals } from "../../helpers/formatters";
 import Unstake from "./Unstake/Unstake";
 import { IoIosBackspace } from "react-icons/io";
+import TaxFreePairing from "./TaxFreePairing/TaxFreePairing";
 
 /* global BigInt */
 
@@ -88,7 +88,7 @@ function Vault(props) {
     await contractProcessor.fetch({
       params: approve,
       onError: (error) => {
-        console.log(error);
+        console.error(error);
       },
       onSuccess: () => setIsApproved(true),
     });
@@ -180,16 +180,11 @@ function Vault(props) {
               <Col md={6} className="my-auto">
                 <Row>
                   <Col className="inner-block">
-                    <p className="mb-0">
+                    <p>
                       Wallet Balance:{" "}
                       <WalletBalance tokenAddress={props.tokenAddress} />
-                      <a
-                        href="https://pancakeswap.finance/add/BNB/0x6b8a384DDe6FC779342Fbb2E4a8EcF73eD18D151"
-                        target="_blank"
-                      >
-                        <Button className="ms-3">Provide LP</Button>
-                      </a>
                     </p>
+                    <TaxFreePairing />
                   </Col>
                 </Row>
                 <Row>

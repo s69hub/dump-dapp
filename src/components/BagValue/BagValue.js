@@ -2,13 +2,16 @@ import React, {useState, useEffect} from "react";
 import { Container, Row, Col, Card, CardGroup } from "react-bootstrap";
 import { useMoralis, useWeb3ExecuteFunction } from "react-moralis";
 import balanceOfABI from "./BalanceOfABI.json";
-import axios from "axios";
 
 /* global BigInt */
 
-const API = axios.create({
-  baseURL: process.env.REACT_APP_DUMP_PRICE_API,
-});
+import Parse from "parse/dist/parse.min.js";
+
+Parse.initialize(
+  process.env.REACT_APP_PARSE_APP_ID,
+  process.env.REACT_APP_PARSE_JS_KEY
+);
+Parse.serverURL = process.env.REACT_APP_PARSE_SERVER_URL;
 
 function BagValue() {
   const [dumpBalance, setDumpBalance] = useState(0);
@@ -26,9 +29,18 @@ function BagValue() {
   const contractProcessor = useWeb3ExecuteFunction();
 
   const fetchPriceData = async () => {
-    await API.get("/price").then((res) => {
-      setPriceData(res.data);
-      setDumpPrice(res.data[res.data.length - 1].price);
+    const query = new Parse.Query("PriceData");
+    query.ascending("price");
+    query.limit(100000);
+    query.find().then((results) => {
+      const data = results.map((result) => {
+        return {
+          date: result.get("date"),
+          price: result.get("price"),
+        };
+      });
+      setPriceData(data);
+      setDumpPrice(data[data.length - 1].price);
     });
   };
 

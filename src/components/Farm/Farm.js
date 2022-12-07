@@ -3,6 +3,7 @@ import { Col, Container, Row } from "react-bootstrap";
 import Vault from "../Vault/Vault";
 import dump from "../../images/dump.svg";
 import dumprain from "../../images/dumprain.svg";
+import Bounty from "../Bounty/Bounty";
 
 function Farm() {
   return (
@@ -12,8 +13,13 @@ function Farm() {
           <img
             src={dumprain}
             height="200"
-            className="mt-2 mb-5 shadow-filter"
+            className="mt-2 mb-4 shadow-filter"
           />
+        </Col>
+      </Row>
+      <Row>
+        <Col className="text-center mb-3">
+          <Bounty />
         </Col>
       </Row>
       <Row>
